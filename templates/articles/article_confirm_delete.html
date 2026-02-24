@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Article - Django CMS{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 8rem auto; background: var(--card-bg); padding: 3rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+    <h1 style="font-size: 2rem; margin-bottom: 1rem; color: #ef4444;">Delete Article?</h1>
+    <p style="color: var(--text-muted); margin-bottom: 3rem; line-height: 1.6;">Are you sure you want to delete <strong>"{{ object.title }}"</strong>? This action cannot be undone.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn" style="background: #ef4444; border: none; cursor: pointer; padding: 1rem 3rem; width: 100%; margin-bottom: 1rem;">Yes, Delete It</button>
+        <a href="{% url 'dashboard' %}" style="display: block; color: var(--text-muted); text-decoration: none; font-weight: 600; padding: 1rem;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

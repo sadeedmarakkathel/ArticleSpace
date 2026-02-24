@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Edit{% else %}Create{% endif %} Article - ArticleSpace{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 4rem auto;">
+    <a href="{% url 'dashboard' %}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; margin-bottom: 2rem;">
+        &larr; Back to Dashboard
+    </a>
+    
+    <h1 style="font-size: 2.5rem; margin-bottom: 3rem; letter-spacing: -1px;">{% if object %}Edit Article{% else %}Create New Article{% endif %}</h1>
+    
+    <form method="post" enctype="multipart/form-data" style="background: var(--card-bg); padding: 3rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.05);">
+        {% csrf_token %}
+        {% for field in form %}
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.75rem; font-weight: 600; color: var(--text-muted);">{{ field.label }}</label>
+            {% if field.name == 'content' %}
+                {{ field }}
+            {% else %}
+                {{ field }}
+            {% endif %}
+            {% if field.help_text %}
+                <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">{{ field.help_text }}</div>
+            {% endif %}
+            {% if field.errors %}
+                <div style="color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem;">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <div style="display: flex; gap: 1rem; margin-top: 3rem;">
+            <button type="submit" class="btn" style="border: none; cursor: pointer; padding: 1rem 3rem;">Save Article</button>
+            <a href="{% url 'dashboard' %}" style="padding: 1rem 2rem; color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    textarea {
+        min-height: 400px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - ArticleSpace{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 4rem auto;">
+    <a href="{% url 'profile' user.username %}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; margin-bottom: 2rem;">
+        &larr; Back to Profile
+    </a>
+    
+    <h1 style="font-size: 2.5rem; margin-bottom: 3rem; letter-spacing: -1px;">Edit Profile</h1>
+    
+    <form method="post" style="background: var(--card-bg); padding: 3rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.05);">
+        {% csrf_token %}
+        {% for field in form %}
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.75rem; font-weight: 600; color: var(--text-muted);">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div style="color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem;">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <div style="display: flex; gap: 1rem; margin-top: 3rem;">
+            <button type="submit" class="btn" style="border: none; cursor: pointer; padding: 1rem 3rem;">Save Changes</button>
+            <a href="{% url 'profile' user.username %}" style="padding: 1rem 2rem; color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

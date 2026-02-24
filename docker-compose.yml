@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=cms_db
+      - POSTGRES_USER=cms_user
+      - POSTGRES_PASSWORD=cms_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cms_user -d cms_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-cms-secret-key-12345
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web
+      - DATABASE_URL=postgres://cms_user:cms_password@db:5432/cms_db
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

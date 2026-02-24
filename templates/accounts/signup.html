@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - ArticleSpace{% endblock %}
+
+{% block content %}
+<div style="max-width: 450px; margin: 6rem auto; background: var(--card-bg); padding: 3rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; letter-spacing: -1px;">Join us</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2.5rem;">Create an account and start managing content.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.4rem;">{{ field.help_text }}</div>
+            {% endif %}
+            {% if field.errors %}
+                <div style="color: #ef4444; font-size: 0.8rem; margin-top: 0.4rem;">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn" style="width: 100%; border: none; cursor: pointer; margin-top: 1rem; padding: 1rem;">Create Account</button>
+    </form>
+    
+    <p style="margin-top: 2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+        Already have an account? <a href="{% url 'login' %}" style="color: var(--primary); text-decoration: none; font-weight: 600;">Sign in</a>
+    </p>
+</div>
+
+<style>
+    ul.errorlist {
+        display: none;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} - ArticleSpace{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 4rem auto;">
+    <a href="/" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; margin-bottom: 2rem;">
+        &larr; Back to Articles
+    </a>
+    
+    <span style="color: var(--primary); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Article</span>
+    <h1 style="font-size: 3.5rem; margin: 0.5rem 0 2rem; letter-spacing: -2px; line-height: 1.1;">{{ article.title }}</h1>
+    
+    {% if article.image %}
+    <div style="width: 100%; border-radius: 2rem; overflow: hidden; margin-bottom: 3rem; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+        <img src="{{ article.image.url }}" alt="{{ article.title }}" style="width: 100%; height: auto; display: block;">
+    </div>
+    {% endif %}
+    
+    <div style="display: flex; align-items: center; margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div style="width: 48px; height: 48px; background: var(--primary); border-radius: 50%; margin-right: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 600;">{{ article.author.username.0|upper }}</div>
+        <div>
+            <div style="font-weight: 600;">{{ article.author.username }}</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Published on {{ article.published_at|date:"F d, Y" }}</div>
+        </div>
+    </div>
+
+    <div style="line-height: 1.8; font-size: 1.2rem; color: rgba(255,255,255,0.9);">
+        {{ article.content|linebreaks }}
+    </div>
+</div>
+{% endblock %}

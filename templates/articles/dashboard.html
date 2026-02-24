@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - ArticleSpace{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+    <div>
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; letter-spacing: -1px;">Dashboard</h1>
+        <p style="color: var(--text-muted);">Manage your articles and publishing workflow.</p>
+    </div>
+    <a href="{% url 'article_create' %}" class="btn">+ Create Article</a>
+</div>
+
+<div style="background: var(--card-bg); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;">TITLE</th>
+                <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;">STATUS</th>
+                <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;">DATE</th>
+                <th style="padding: 1.5rem 2rem; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;">ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 1.5rem 2rem; font-weight: 600;">{{ article.title }}</td>
+                <td style="padding: 1.5rem 2rem;">
+                    <span class="status-pill {% if article.status == 'PUBLISHED' %}status-published{% else %}status-draft{% endif %}">
+                        {{ article.get_status_display }}
+                    </span>
+                </td>
+                <td style="padding: 1.5rem 2rem; color: var(--text-muted); font-size: 0.9rem;">{{ article.created_at|date:"M d, Y" }}</td>
+                <td style="padding: 1.5rem 2rem;">
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="{% url 'article_update' article.slug %}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600;">Edit</a>
+                        {% if article.status == 'DRAFT' %}
+                        <form action="{% url 'article_publish_ui' article.slug %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #10b981; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; padding: 0;">Publish</button>
+                        </form>
+                        {% endif %}
+                        <a href="{% url 'article_delete' article.slug %}" style="color: #ef4444; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 4rem; text-align: center; color: var(--text-muted);">You haven't created any articles yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

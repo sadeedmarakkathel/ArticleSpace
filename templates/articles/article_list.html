@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Latest Articles - ArticleSpace{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Our Latest Stories</h1>
+    <p>Discover deep dives into technology, design, and architecture.</p>
+    <a href="#articles-grid" class="btn" style="margin-top: 2rem;">Explore Articles</a>
+</div>
+
+<div id="articles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; padding-top: 4rem;">
+    {% for article in articles %}
+    <a href="{% url 'article_detail' article.slug %}" style="background: var(--card-bg); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; text-decoration: none; color: inherit; display: flex; flex-direction: column; overflow: hidden;">
+        {% if article.image %}
+        <div style="width: 100%; height: 220px; overflow: hidden;">
+            <img src="{{ article.image.url }}" alt="{{ article.title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+        </div>
+        {% else %}
+        <div style="width: 100%; height: 220px; background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1)); display: flex; align-items: center; justify-content: center;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">ArticleSpace</span>
+        </div>
+        {% endif %}
+        <div style="padding: 2rem; display: flex; flex-direction: column; flex-grow: 1;">
+            <span style="color: var(--primary); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem;">Analysis</span>
+            <h2 style="margin: 0 0 1rem; font-size: 1.5rem; line-height: 1.3; font-weight: 600;">{{ article.title }}</h2>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1;">{{ article.content|truncatewords:25 }}</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; margin-top: auto;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; margin-right: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; color: white;">{{ article.author.username.0|upper }}</div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">{{ article.author.username }}</span>
+                </div>
+                <span style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">{{ article.published_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <p style="text-align: center; grid-column: 1/-1; color: var(--text-muted);">No articles found.</p>
+    {% endfor %}
+</div>
+{% endblock %}
