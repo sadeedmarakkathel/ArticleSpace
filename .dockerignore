@@ -7,3 +7,8 @@ staticfiles
 media
 .venv
 venv
+media.zip
+data.json
+data_utf8.json
+*.zip
+*.json

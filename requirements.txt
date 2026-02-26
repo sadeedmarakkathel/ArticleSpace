@@ -8,3 +8,5 @@ gunicorn
 django-cors-headers
 Pillow
 requests
+django-storages
+boto3
