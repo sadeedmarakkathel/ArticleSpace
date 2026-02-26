@@ -20,6 +20,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . /app/
 
+# Ensure media directory exists and has permissions
+RUN mkdir -p /app/media && chmod -R 755 /app/media
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
